@@ -1,0 +1,7 @@
+train: /public/home/louweizhen2023/yolov9-main/Insect_Detect/train
+val: /public/home/louweizhen2023/yolov9-main/Insect_Detect/valid
+test: /public/home/louweizhen2023/yolov9-main/Insect_Detect/test
+
+is_coco: False
+nc: 6
+names: ['fly', 'hbee', 'hovfly', 'other', 'shadow', 'wasp']

@@ -1,0 +1,22 @@
+       # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
+# COCO 2017 dataset http://cocodataset.org
+# Example usage: python train.py --data coco.yaml
+# parent
+# ├── yolov5
+# └── datasets
+#     └── coco  ← downloads here
+
+
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+train: /public/home/louweizhen2023/yolov9-main/train1201   # train images (relative to 'path')
+val: /public/home/louweizhen2023/yolov9-main/val1201   # validate images (relative to 'path')
+test: /public/home/louweizhen2023/yolov9-main/test1201 # test images
+is_coco: False
+# Classes
+nc: 15  # number of classes
+names: ['Coccinellidae sep.', 'Apis mellifera', 'Bombus lapidarius', 'Bombus terrestris', 'Eupeodes corolla', 'Episyrphus balteatus',
+        'Aglais urticae', 'Vespula vulgaris', 'Eristalis tenax', 'Non-Bombus Anthophila', 'Bombus spp.', 'Syrphidae', 'Fly spp.', 'Unclear insect', 'Mixed animals']
+
+
+# Download script/URL (optional)
+#download: Optional

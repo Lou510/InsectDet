@@ -1,0 +1,107 @@
+# YOLOv9
+
+# parameters
+nc: 15  # number of classes
+depth_multiple: 1.0  # model depth multiple
+width_multiple: 1.0  # layer channel multiple
+#activation: nn.LeakyReLU(0.1)
+#activation: nn.ReLU()
+
+# anchors
+anchors: 3
+
+# gelan backbone
+backbone:
+  [
+   # conv down
+   [-1, 1, Conv, [32, 3, 2]],  # 0-P1/2
+
+   # conv down
+   [-1, 1, Conv, [64, 3, 2]],  # 1-P2/4
+
+   # elan-1 block
+   [-1, 1, ELAN1, [64, 64, 32]],  # 2
+
+   # avg-conv down
+   [-1, 1, AConv, [128]],  # 3-P3/8
+
+    # ContextAggregation branch
+   [-1, 1, DMCA, [128]],  # 4-P3/8 with ContextAggregation
+
+   # elan-2 block
+   [3, 1, RepNCSPELAN4, [128, 128, 64, 3]],  # 5
+
+   [[4, 5], 1, Concat, [1]],
+
+   # avg-conv down
+   [-1, 1, AConv, [192]],  # 7-P4/16
+
+   # elan-2 block
+   [-1, 1, RepNCSPELAN4, [192, 192, 96, 3]],  # 8
+
+   # avg-conv down
+   [-1, 1, AConv, [256]],  # 9-P5/32
+
+   # elan-2 block
+   [-1, 1, RepNCSPELAN4, [256, 256, 128, 3]],  # 10
+  ]
+
+# elan head
+head:
+  [
+   # elan-spp block
+   [-1, 1, SPPELAN, [256, 128]],  # 11
+
+   # up-concat merge
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 8], 1, Concat, [1]],  # cat backbone P4
+   [-1, 3, SFFM, [192]],
+
+   # elan-2 block
+   [13, 1, RepNCSPELAN4, [192, 192, 96, 3]],  # 15
+   [[-1, 14], 1, Concat, [1]],  # cat backbone P4
+
+
+   # up-concat merge
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 6], 1, Concat, [1]],  # cat backbone P3
+   [-1, 3, SFFM, [128]],
+
+   # elan-2 block
+   [18, 1, RepNCSPELAN4, [128, 128, 64, 3]],  # 20
+   [[-1, 19], 1, Concat, [1]],  # cat backbone P4    #21
+
+   # avg-conv-down merge
+   [-1, 1, AConv, [96]],
+   [[-1, 16], 1, Concat, [1]],  # cat head P4
+
+   # elan-2 block
+   [-1, 1, RepNCSPELAN4, [192, 192, 96, 3]],  # 24 (P4/16-medium)
+
+   # avg-conv-down merge
+   [-1, 1, AConv, [128]],
+   [[-1, 11], 1, Concat, [1]],  # cat head P5
+
+   # elan-2 block
+   [-1, 1, RepNCSPELAN4, [256, 256, 128, 3]],  # 27 (P5/32-large)
+
+   # elan-spp block
+   [10, 1, SPPELAN, [256, 128]],  # 28
+
+   # up-concat merge
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 8], 1, Concat, [1]],  # cat backbone P4
+
+   # elan-2 block
+   [-1, 1, RepNCSPELAN4, [192, 192, 96, 3]],  # 31
+
+   # up-concat merge
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 6], 1, Concat, [1]],  # cat backbone P3
+
+   # elan-2 block
+   [-1, 1, RepNCSPELAN4, [128, 128, 64, 3]],  # 34
+
+   # detect
+   [[34, 31, 28, 21, 24, 27], 1, DualDDetect, [nc]],  # Detect(P3, P4, P5)
+  ]
