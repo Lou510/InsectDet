@@ -1,5 +1,7 @@
 
 # InsectDet
+[![DOI](https://zenodo.org/badge/1078714105.svg)](https://doi.org/10.5281/zenodo.17385976)
+
 Detecting and classifying tiny objects in cluttered scenes is critical for industrial development and ecosystem monitoring applications. However, this task is highly challenging due to the limitations of these objects. They have weak textural features, low contrast against backgrounds, and frequent occlusions. These factors hinder accurate identification and classification. To address these issues, we propose a robust deep network that incorporates a Dynamic Multi-scale Cross-Attention (DMCA) module, a Star Feature Fusion Module (SFFM), and a shape-sensitive Intersection over Union (IoU) loss function. The DMCA module enhances feature interaction across local and global contexts through adaptive sampling and multi-scale fusion, effectively capturing subtle characteristics of tiny objects. The SFFM improves the network's ability to integrate latent, fine-grained cues further. Additionally, we introduce a shape-sensitive IoU loss function that uses a dynamic, non-monotonic focusing mechanism to adjust gradient weights based on the quality of the bounding box. This function imposes refined penalties for discrepancies in shape and distance. Extensive experiments on two challenging small-object datasets in cluttered environments, namely, Insects-1201val and Insects-Detect, demonstrate the effectiveness of our approach.
 
 ![Framework Overview](assets/network.png)
